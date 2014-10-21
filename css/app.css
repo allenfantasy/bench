@@ -1,0 +1,45 @@
+#run {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+}
+.case-name {
+  color: red;
+}
+#user-output {
+  float: left;
+  width: 50%;
+}
+#benchmark-output {
+  float: left;
+  width: 30%;
+}
+
+.box {
+  width: 100px;
+  height: 100px;
+  line-height:100px;
+  color: white;
+  text-align:center;
+}
+#topleft-box {
+  background-color: red;
+}
+#translate3d-box {
+  background-color: yellow;
+}
+#greensock-box {
+  background-color: green;
+}
+#jquery-animate-box {
+  background-color: gray;
+}
+
+.absolute {
+  position: absolute;
+}
+.translate3d {
+  -webkit-transition: transform 100ms;
+  transform: translate3d(100px, 100px, 0);
+  -webkit-transform: translate3d(100px, 100px, 0);
+}

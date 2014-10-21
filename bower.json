@@ -1,0 +1,31 @@
+{
+  "name": "perf-translate",
+  "version": "0.0.0",
+  "authors": [
+    "Allen Wu <allenwu1018@gmail.com>"
+  ],
+  "description": "Performance benchmark of translation",
+  "keywords": [
+    "performance",
+    "translate"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "js",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "famous": "0.2.2",
+    "lodash": "~2.4.1",
+    "platform": "~1.2.0",
+    "benchmark": "~1.0.0",
+    "famous-polyfills": "git+https://github.com/Famous/polyfills.git#0.1.1",
+    "gsap": "~1.14.1",
+    "jquery": "1.10.1"
+  }
+}

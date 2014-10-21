@@ -1,0 +1,20 @@
+{
+  "name": "benchmark",
+  "version": "0.0.0",
+  "description": "Animation performance benchmark",
+  "main": "web.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [
+    "performance",
+    "benchmark"
+  ],
+  "author": "Allen Wu",
+  "license": "MIT",
+  "dependencies": {
+    "mongoose": "^3.8.17",
+    "mongoose-relationship": "0.0.6",
+    "restify": "^2.8.3"
+  }
+}

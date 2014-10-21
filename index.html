@@ -1,0 +1,29 @@
+<html>
+  <head>
+    <script src="js/famous-polyfills/functionPrototypeBind.js"></script>
+    <script src="js/famous-polyfills/classList.js"></script>
+    <script src="js/famous-polyfills/requestAnimationFrame.js"></script>
+    <script src="js/requirejs/require.js">
+    <link rel="stylesheet" type="text/css" href="css/famous.css" />
+    <script type="text/javascript" src="js/famous.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/app.css">
+
+  </head>
+  <body>
+    <!-- Layout -->
+    <div id='user-output'>
+      <div id="topleft-box" class="box">TopLeft</div>
+      <div id="translate3d-box" class="box">Translate3d</div>
+      <div id="famous-box" class="box"></div>
+      <div id="greensock-box" class="box">Greensock</div>
+      <div id="jquery-animate-box" class="box">jQuery Animate</div>
+    </div>
+    <div id="benchmark-output"></div>
+    <button id="run">RUN</div>
+    <!-- End of Layout -->
+
+    <!-- 2D Translate Benchmark -->
+    <script src='benchmarks/2d-translate.js'></script>
+
+  </body>
+</html>
