@@ -110,7 +110,7 @@ require({
         document.getElementById('topleft-box').className = 'box';
       }
     },{
-      name: 'jsTranslate3d',
+      name: 'cssTranslate3d',
       defer: true,
       fn: function(deferred) {
         targetBox.className += ' translate3d';
