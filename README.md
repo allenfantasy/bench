@@ -17,8 +17,8 @@ Using [benchmark.js](https://github.com/bestiejs/benchmark.js) to do the bench.
 
 install javascript dependencies
 ```shell
-# install mongodb if needed
-biower install 
+# install mongodb, node.js, bower
+bower install 
 npm install
 ```
 
