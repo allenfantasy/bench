@@ -1,8 +1,8 @@
-#run {
+/*#run {
   position: absolute;
   right: 20px;
   top: 20px;
-}
+}*/
 .case-name {
   color: red;
 }
@@ -13,6 +13,12 @@
 #benchmark-output {
   float: left;
   width: 30%;
+  height: 300px;
+}
+#control {
+  float: left;
+  width: 20%;
+  height: 300px;
 }
 
 .box {

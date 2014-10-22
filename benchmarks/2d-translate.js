@@ -15,20 +15,21 @@ require({
     famous: 'famous',
     jquery: 'jquery/jquery',
     greensockTweenLite: 'gsap/src/uncompressed/TweenLite',
+    benchdata: '../helpers/bench'
   }
 },
-['benchmark', 'greensockTweenLite', 'jquery'], function(Benchmark, TweenLite, $) {
+['benchmark', 'greensockTweenLite', 'jquery', 'benchdata'], function(Benchmark, TweenLite, $, BenchData) {
   var suite = new Benchmark.Suite;
   var support = Benchmark.support;
   var testResults = [];
   var targetBox;
+  var outputElem = document.getElementById('benchmark-output');
 
   var famousView;
   define('famous-view', function(require, exports, module) {
     var Engine = require('famous/core/Engine');
     var Surface = require('famous/core/Surface');
     var Modifier = require('famous/core/Modifier');
-    //var StateModifier = require('famous/modifiers/StateModifier');
     var Transform = require('famous/core/Transform');
     var Transitionable = require('famous/transitions/Transitionable');
 
@@ -42,9 +43,6 @@ require({
         backgroundColor: 'blue'
       }
     });
-    //var mod = new StateModifier({
-      //transform: Transform.translate(0,0,0)
-    //});
     var mod = new Modifier({
       transform: function() {
         return Transform.translate(t.get()[0], t.get()[1], 0);
@@ -54,15 +52,11 @@ require({
 
     module.exports = {
       animate: function(deferred) {
-        //mod.setTransform(Transform.translate(X_MAX, Y_MAX, 0), { duration: TIME_INTERVAL, curve: 'linear' }, function() {
-          //deferred.resolve();
-        //});
         t.set([X_MAX, Y_MAX], { duration: TIME_INTERVAL, curve: 'linear' }, function() {
           deferred.resolve();
         });
       },
       clear: function() {
-        //mod.setTransform(Transform.translate(0,0,0), { duration: 0 });
         t.set([0,0], { duration: 0 });
       }
     };
@@ -72,7 +66,7 @@ require({
   });
 
   function clearAll() {
-    //TODO: clear all thus we can do more runs
+    // Do nothing yeah.
   }
 
   /*** Testcases' definitions ***/
@@ -178,10 +172,16 @@ require({
       name: bench.name,
       opsPerSec: Benchmark.formatNumber(bench.hz.toFixed(bench.hz < 100 ? 2 : 0)),
       rme: (support.java ? '+/-' : '\xb1') + bench.stats.rme.toFixed(2),
-      size: bench.stats.sample.length
+      size: bench.stats.sample.length,
+      bench: {
+        name: bench.name,
+        opsPerSec: bench.hz.toFixed(2),
+        rme: bench.stats.rme.toFixed(2),
+        moe: (bench.stats.moe*100).toFixed(2)
+      }
     });
-    console.log('testCase ' + bench.name + ' finished');
-    console.log(bench);
+    outputElem.innerHTML += '<br />testCase ' + bench.name + ' finished';
+    //console.log(bench);
   })
   .on('complete', function() {
     var html = '';
@@ -190,17 +190,51 @@ require({
       html += caseHTML + '<br /><br />'; 
     });
     html += 'Fastest is ' + '<span style="color:blue;">' + this.filter('fastest').pluck('name') + '</span>';
-    document.getElementById('benchmark-output').innerHTML = html;
+    outputElem.innerHTML = html;
+    var data = {
+      name: 'bench',
+      interval: TIME_INTERVAL,
+      type: '2d-translate',
+      suites: testResults.map(function(testcase) {
+        return testcase.bench; 
+      })
+    };
+    BenchData.post(data, function() {
+      console.log('done');
+    });
     testResults = [];
     clearAll();
   });
   /*** End of suites definitions ***/
 
   /*** test controlling ***/
-  var run = document.getElementById('run');
-  run.addEventListener('click', function() {
-    document.getElementById('benchmark-output').innerHTML = 'running...';
+  var $run = $('#run');
+  var $history = $('#history');
+  var $clear = $('#clear');
+  var $deleteOne = $('#delete-one');
+  $run.on('click', function() {
+    $('#benchmark-output').html('running...');
     suite.run({ async: true });
+  });
+  $history.on('click', function() {
+    BenchData.get(function(data) {
+      console.log(data);
+    });
+  });
+  $clear.on('click', function() {
+    BenchData.deleteAll(function(result) {
+      console.log(result);
+      console.log('deleted all');
+    });
+  });
+  $deleteOne.on('click', function() {
+    var id = prompt('Which id to delete?');
+    if (id !== null) {
+      BenchData.deleteOne(id, function() {
+        console.log('delete successful');
+      });
+    }
+
   });
   /*** End of test controlling ***/
 
