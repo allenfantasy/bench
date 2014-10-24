@@ -13,16 +13,22 @@ Using [benchmark.js](https://github.com/bestiejs/benchmark.js) to do the bench.
 * Bower
 * Mongodb
 
-### Usage
+### Preparation
 
 install javascript dependencies
 ```shell
-# install mongodb if needed
-biower install 
+# install mongodb, node.js, bower
+bower install 
 npm install
 ```
 
-Then open `index.html` in browser to run the bench.
+### Usage
+
+Run step 2 & 3 if you want to collect data.
+
+1. open `index.html` in browser
+2. [optional] start mongodb
+3. [optional] run `node web.js` in terminal
 
 ### TODO
 
