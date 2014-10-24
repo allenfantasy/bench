@@ -1,0 +1,34 @@
+<html>
+  <head>
+    <script src="js/famous-polyfills/functionPrototypeBind.js"></script>
+    <script src="js/famous-polyfills/classList.js"></script>
+    <script src="js/famous-polyfills/requestAnimationFrame.js"></script>
+    <script src="js/requirejs/require.js">
+    <link rel="stylesheet" type="text/css" href="css/famous.css" />
+    <script type="text/javascript" src="js/famous.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/2d-rotate.css">
+
+  </head>
+  <body>
+    <!-- Layout -->
+    <div id='user-output'>
+      <!--<div id="topleft-box" class="box">TopLeft</div>-->
+      <div id="css3-rotate-box" class="box">Translate3d</div>
+      <div id="famous-box" class="box"></div>
+      <!--<div id="greensock-box" class="box">Greensock</div>-->
+      <!--<div id="jquery-animate-box" class="box">jQuery Animate</div>-->
+    </div>
+    <div id="benchmark-output"></div>
+    <div id="control">
+      <button id="run">RUN</button>
+      <button id="history">HISTORY</button>
+      <!--<button id="clear">DELETE_ALL</button>-->
+      <button id="delete-one">DELETE_ONE</button>
+    </div>
+    <!-- End of Layout -->
+
+    <!-- 2D Translate Benchmark -->
+    <script src='benchmarks/2d-rotate.js'></script>
+
+  </body>
+</html>

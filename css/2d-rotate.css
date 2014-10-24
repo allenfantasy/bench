@@ -1,0 +1,50 @@
+/*#run {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+}*/
+.case-name {
+  color: red;
+}
+#user-output {
+  float: left;
+  width: 50%;
+}
+#benchmark-output {
+  float: left;
+  width: 30%;
+  height: 300px;
+}
+#control {
+  float: left;
+  width: 20%;
+  height: 300px;
+}
+
+.box {
+  width: 100px;
+  height: 100px;
+  line-height:100px;
+  color: white;
+  text-align:center;
+}
+#css3-rotate-box {
+  background-color: yellow;
+  -webkit-transition: all 100ms;
+  -moz-transition: all 100ms;
+  -o-transition: all 100ms;
+  transition: all 100ms;
+}
+#greensock-box {
+  background-color: green;
+}
+#jquery-animate-box {
+  background-color: gray;
+}
+
+.rotated {
+  transform: rotate(180deg);
+  -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  -o-transform: rotate(180deg);
+}
