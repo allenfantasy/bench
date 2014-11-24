@@ -1,8 +1,9 @@
 // The following is the benchmark for 2D rotation
-// move target from 0deg -> 180deg
+// move target from 0deg -> 180deg, then reset back to 0deg
 
 var TIME_INTERVAL = 100; 
-var DEGREE_MAX = Math.PI * 1;
+var DEGREE_MAX_RAD = Math.PI * 1;
+var DEGREE_MAX = 180;
 
 require.config({ baseUrl: 'js/' });
 require({
@@ -12,11 +13,11 @@ require({
     platform: 'platform/platform',
     famous: 'famous',
     jquery: 'jquery/jquery',
-    greensockTweenLite: 'gsap/src/uncompressed/TweenLite',
+    greensockTweenMax: 'gsap/src/uncompressed/TweenMax',
     benchdata: '../helpers/bench'
   }
 },
-['benchmark', 'greensockTweenLite', 'jquery', 'benchdata'], function(Benchmark, TweenLite, $, BenchData) {
+['benchmark', 'greensockTweenMax', 'jquery', 'benchdata'], function(Benchmark, TweenMax, $, BenchData) {
   var suite = new Benchmark.Suite;
   var support = Benchmark.support;
   var testResults = [];
@@ -53,7 +54,8 @@ require({
 
     module.exports = {
       animate: function(deferred) {
-        t.set(DEGREE_MAX, { duration: TIME_INTERVAL, curve: 'linear' }, function() {
+        t.set(DEGREE_MAX_RAD, { duration: TIME_INTERVAL, curve: 'linear' }, function() {
+          t.set(0, { duration: 0 });
           if (deferred) deferred.resolve();
         });
       },
@@ -73,20 +75,19 @@ require({
   /*** Testcases' definitions ***/
   var testCases = [
     {
-      name: 'cssRotate',
+      name: 'CSS3 Transition + CSS3 Rotate',
       defer: true,
       fn: function(deferred) {
         targetBox.className += ' rotated';
         setTimeout(function() {
           deferred.resolve();   
+          targetBox.className = 'box';
         }, TIME_INTERVAL);
       },
       setup: function() {
         targetBox = document.getElementById('css3-rotate-box');
       },
-      teardown: function() {
-        targetBox.className = 'box';
-      }
+      teardown: function() {}
     },
     {
       name: 'famous',
@@ -94,43 +95,50 @@ require({
       fn: function(deferred) {
         famousView.animate(deferred);
       },
-      teardown: function() {
-        famousView.clear();
-      }
+      teardown: function() {}
     }
-    /*,{
+    ,{
       name: 'greensock',
       defer: true,
       fn: function(deferred) {
-        TweenLite.fromTo(targetBox, TIME_INTERVAL / 1000, {left: '0px', top: '0px'}, {left: X_MAX + 'px', top: Y_MAX + 'px', onComplete: function() { deferred.resolve(); }});
+        TweenMax.fromTo(targetBox, TIME_INTERVAL / 1000, 
+                         {css: {rotation: 0}},
+                         {css: {rotation: DEGREE_MAX}, onComplete: function() {
+                           TweenMax.to(targetBox, 0, {css: {rotation: 0}});
+                           deferred.resolve();
+                         }});
       },
       setup: function() {
         targetBox = document.getElementById('greensock-box');
       },
-      teardown: function() {
-        TweenLite.to(targetBox, 0, { left: '0px', top: '0px' });
-      }
+      teardown: function() {}
     },{
-      name: 'jquery-animate',
+      name: 'pureJS + CSS3 Rotate',
       defer: true,
       fn: function(deferred) {
-        $targetBox.animate({
-          left: X_MAX + 'px',
-          top: Y_MAX + 'px'
-        }, TIME_INTERVAL, function() {
-          deferred.resolve();
-        });
+        var startTime = new Date();
+        function step() {
+          var timestamp = new Date();
+          var progress = timestamp - startTime;
+          var degree = Math.min(progress*DEGREE_MAX/TIME_INTERVAL, DEGREE_MAX)
+          targetBox.style['-webkit-transform'] = 'rotate(' + degree + 'deg)';
+          targetBox.style['-moz-transform'] = 'rotate(' + degree + 'deg)';
+          if (progress < TIME_INTERVAL) {
+            requestAnimationFrame(step);
+          }
+          else {
+            targetBox.style['-webkit-transform'] = 'rotate(0deg)';
+            targetBox.style['-moz-transform'] = 'rotate(0deg)';
+            deferred.resolve();
+          }
+        }
+        requestAnimationFrame(step);
       },
       setup: function() {
-        var $targetBox = $('#jquery-animate-box');
+        targetBox = document.getElementById('js-animate-box');
       },
-      teardown: function() {
-        $targetBox.css({
-          left: '0px',
-          top: '0px'
-        });
-      }
-    }*/];
+      teardown: function() {}
+    }];
   /*** End of testcases' definitions ***/
 
   /*** suite's definitions ***/

@@ -30,19 +30,20 @@
 }
 #css3-rotate-box {
   background-color: yellow;
-  -webkit-transition: all 100ms;
-  -moz-transition: all 100ms;
-  -o-transition: all 100ms;
-  transition: all 100ms;
+  color: black;
 }
 #greensock-box {
   background-color: green;
 }
-#jquery-animate-box {
+#js-animate-box {
   background-color: gray;
 }
 
 .rotated {
+  -webkit-transition: all 100ms;
+  -moz-transition: all 100ms;
+  -o-transition: all 100ms;
+  transition: all 100ms;
   transform: rotate(180deg);
   -webkit-transform: rotate(180deg);
   -moz-transform: rotate(180deg);
