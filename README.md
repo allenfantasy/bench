@@ -34,7 +34,7 @@ Run step 2 & 3 if you want to collect data.
 
 - [X] Backend server to collect bench data
 - [ ] 3D Translation benchmark
-- [ ] 2D Rotate benchmark
+- [X] 2D Rotate benchmark
 - [ ] 3D Rotate benchmark
 
 ### License
