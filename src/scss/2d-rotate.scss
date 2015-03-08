@@ -1,3 +1,4 @@
+@import '_constants';
 /*#run {
   position: absolute;
   right: 20px;
@@ -25,25 +26,28 @@
   width: 100px;
   height: 100px;
   line-height:100px;
-  color: white;
+  color: black;
   text-align:center;
 }
 #css3-rotate-box {
-  background-color: yellow;
-  color: black;
+  background-color: $red;
+  color: white;
 }
 #greensock-box {
-  background-color: green;
+  background-color: $green;
 }
 #js-animate-box {
-  background-color: gray;
+  background-color: $yellow;
+}
+#famous-box > div {
+  background-color: $blue;
 }
 
 .rotated {
-  -webkit-transition: all 100ms;
-  -moz-transition: all 100ms;
-  -o-transition: all 100ms;
-  transition: all 100ms;
+  -webkit-transition: transform 100ms;
+  -moz-transition: transform 100ms;
+  -o-transition: transform 100ms;
+  transition: transform 100ms;
   transform: rotate(180deg);
   -webkit-transform: rotate(180deg);
   -moz-transform: rotate(180deg);

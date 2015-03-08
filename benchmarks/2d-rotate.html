@@ -1,11 +1,7 @@
 <html>
   <head>
-    <script src="js/famous-polyfills/functionPrototypeBind.js"></script>
-    <script src="js/famous-polyfills/classList.js"></script>
-    <script src="js/famous-polyfills/requestAnimationFrame.js"></script>
-    <script src="js/requirejs/require.js"></script>
-    <link rel="stylesheet" type="text/css" href="css/famous.css" />
-    <link rel="stylesheet" type="text/css" href="css/2d-rotate.css">
+    <link rel="stylesheet" type="text/css" href="/vendors/famous.css" />
+    <link rel="stylesheet" type="text/css" href="/dist/css/2d-rotate.css">
 
   </head>
   <body>
@@ -23,11 +19,13 @@
       <button id="history">HISTORY</button>
       <!--<button id="clear">DELETE_ALL</button>-->
       <button id="delete-one">DELETE_ONE</button>
+      <a href="/">BACK</a>
     </div>
     <!-- End of Layout -->
 
     <!-- 2D Translate Benchmark -->
-    <script src='benchmarks/2d-rotate.js'></script>
+    <script src='/vendors/jquery.min.js'></script>
+    <script src='/dist/js/2d-rotate.js'></script>
 
   </body>
 </html>

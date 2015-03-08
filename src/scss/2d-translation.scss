@@ -1,3 +1,4 @@
+@import '_constants';
 /*#run {
   position: absolute;
   right: 20px;
@@ -29,16 +30,19 @@
   text-align:center;
 }
 #topleft-box {
-  background-color: red;
+  background-color: $red;
 }
 #translate3d-box {
-  background-color: yellow;
+  background-color: $yellow;
+}
+#famous-box > div {
+  background-color: $blue;
 }
 #greensock-box {
-  background-color: green;
+  background-color: $green;
 }
 #jquery-animate-box {
-  background-color: gray;
+  background-color: $coffee;
 }
 
 .absolute {

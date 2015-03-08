@@ -1,2 +1,4 @@
 node_modules
-js
+dist/js/*.js
+dist/js/*.js.map
+dist/css/*.css
