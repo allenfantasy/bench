@@ -56,25 +56,25 @@ function clearAll() {
 }
 
 /*** Testcases' definitions ***/
-var testCases = [
-  {
-    name: 'jsTopLeft',
+var testCases = {
+  JSTopLeft: {
+    name: 'JS:Top & Left',
     defer: true,
     fn: function(deferred) {
       var start = new Date();
-      function step() {
+      function step(X_MAX, Y_MAX, TIME_INTERVAL, targetBox) {
         var timestamp = new Date();
         var progress = timestamp - start;
         targetBox.style.left = Math.min(progress*X_MAX/TIME_INTERVAL, X_MAX) + 'px';
         targetBox.style.top = Math.min(progress*Y_MAX/TIME_INTERVAL, Y_MAX) + 'px';
         if (progress < TIME_INTERVAL) {
-          requestAnimationFrame(step);
+          requestAnimationFrame(step.bind(this, X_MAX, Y_MAX, TIME_INTERVAL, targetBox));
         }
         else {
           deferred.resolve();
         }
       }
-      requestAnimationFrame(step);  
+      requestAnimationFrame(step.bind(this, X_MAX, Y_MAX, TIME_INTERVAL, targetBox));
     },
     setup: function() {
       targetBox = doc.getElementById('topleft-box');
@@ -89,8 +89,9 @@ var testCases = [
     onComplete: function() {
       doc.getElementById('topleft-box').className = 'box';
     }
-  },{
-    name: 'cssTranslate3d',
+  },
+  CSSTranslate3d: {
+    name: 'CSSTranslate3d',
     defer: true,
     fn: function(deferred) {
       targetBox.className += ' translate3d';
@@ -104,7 +105,8 @@ var testCases = [
     teardown: function() {
       targetBox.className = 'box';
     }
-  },{
+  },
+  famous: {
     name: 'famous',
     defer: true,
     fn: function(deferred) {
@@ -113,8 +115,9 @@ var testCases = [
     teardown: function() {
       famousView.clear();
     }
-  },{
-    name: 'greensock',
+  },
+  greensock: {
+    name: 'Greensock',
     defer: true,
     fn: function(deferred) {
       TweenLite.fromTo(targetBox, TIME_INTERVAL / 1000, {left: '0px', top: '0px'}, {left: X_MAX + 'px', top: Y_MAX + 'px', onComplete: function() { deferred.resolve(); }});
@@ -125,11 +128,12 @@ var testCases = [
     teardown: function() {
       TweenLite.to(targetBox, 0, { left: '0px', top: '0px' });
     }
-  },{
-    name: 'jquery-animate',
+  },
+ jqueryAnimate: {
+    name: 'Jquery Animate',
     defer: true,
     fn: function(deferred) {
-      $targetBox.animate({
+      targetBox.animate({
         left: X_MAX + 'px',
         top: Y_MAX + 'px'
       }, TIME_INTERVAL, function() {
@@ -137,21 +141,25 @@ var testCases = [
       });
     },
     setup: function() {
-      var $targetBox = $('#jquery-animate-box');
+      targetBox = $('#jquery-animate-box');
     },
     teardown: function() {
-      $targetBox.css({
+      targetBox.css({
         left: '0px',
         top: '0px'
       });
     }
-  }];
+  }
+};
 /*** End of testcases' definitions ***/
 
 /*** suite's definitions ***/
-testCases.forEach(function(testCase) {
-  suite.add(testCase);
-})
+suite.add(testCases.JSTopLeft);
+suite.add(testCases.CSSTranslate3d);
+suite.add(testCases.famous);
+suite.add(testCases.greensock);
+suite.add(testCases.jqueryAnimate);
+
 suite.on('cycle', function(event) {
   var bench = event.target;
   testResults.push({
@@ -167,7 +175,6 @@ suite.on('cycle', function(event) {
     }
   });
   outputElem.innerHTML += '<br />testCase ' + bench.name + ' finished';
-  //console.log(bench);
 })
 .on('complete', function() {
   var html = '';
