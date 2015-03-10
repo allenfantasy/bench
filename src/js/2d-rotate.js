@@ -2,8 +2,8 @@
 // move target from 0deg -> 180deg, then reset back to 0deg
 
 var TIME_INTERVAL = 100; 
-var DEGREE_MAX_RAD = Math.PI * 1;
-var DEGREE_MAX = 180;
+var DEGREE_MAX_RAD = Math.PI * 2;
+var DEGREE_MAX = 360;
 
 require('famous-polyfills');
 
@@ -47,6 +47,7 @@ var famousView = (function() {
     animate: function(deferred) {
       t.set(DEGREE_MAX_RAD, { duration: TIME_INTERVAL, curve: 'linear' }, function() {
         t.set(0, { duration: 0 });
+        //t.set(0, { duration: 0 });
         if (deferred) deferred.resolve();
       });
     },
@@ -61,31 +62,31 @@ function clearAll() {
 }
 
 /*** Testcases' definitions ***/
-var testCases = [
-  {
-    name: 'CSS3 Transition + CSS3 Rotate',
+var testCases = {
+  cssTransition: {
+    name: 'css3 transition + css3 rotate',
     defer: true,
     fn: function(deferred) {
-      targetBox.className += ' rotated';
+      targetbox.className += ' rotated';
       setTimeout(function() {
         deferred.resolve();   
-        targetBox.className = 'box';
+        targetbox.className = 'box';
       }, TIME_INTERVAL);
     },
     setup: function() {
-      targetBox = doc.getElementById('css3-rotate-box');
+      targetbox = doc.getElementById('css3-rotate-box');
     },
     teardown: function() {}
   },
-  {
+  famous: {
     name: 'famous',
     defer: true,
     fn: function(deferred) {
       famousView.animate(deferred);
     },
     teardown: function() {}
-  }
-  ,{
+  },
+  greensock: {
     name: 'greensock',
     defer: true,
     fn: function(deferred) {
@@ -100,19 +101,20 @@ var testCases = [
       targetBox = doc.getElementById('greensock-box');
     },
     teardown: function() {}
-  },{
+  },
+  pureJS: {
     name: 'pureJS + CSS3 Rotate',
     defer: true,
     fn: function(deferred) {
       var startTime = new Date();
-      function step() {
+      function step(DEGREE_MAX, TIME_INTERVAL, targetBox, deferred) {
         var timestamp = new Date();
         var progress = timestamp - startTime;
         var degree = Math.min(progress*DEGREE_MAX/TIME_INTERVAL, DEGREE_MAX)
         targetBox.style['-webkit-transform'] = 'rotate(' + degree + 'deg)';
         targetBox.style['-moz-transform'] = 'rotate(' + degree + 'deg)';
         if (progress < TIME_INTERVAL) {
-          requestAnimationFrame(step);
+          requestAnimationFrame(step.bind(this, DEGREE_MAX, TIME_INTERVAL, targetBox, deferred));
         }
         else {
           targetBox.style['-webkit-transform'] = 'rotate(0deg)';
@@ -120,19 +122,22 @@ var testCases = [
           deferred.resolve();
         }
       }
-      requestAnimationFrame(step);
+      requestAnimationFrame(step.bind(this, DEGREE_MAX, TIME_INTERVAL, targetBox, deferred));
     },
     setup: function() {
       targetBox = doc.getElementById('js-animate-box');
     },
     teardown: function() {}
-  }];
+  }
+};
 /*** End of testcases' definitions ***/
 
 /*** suite's definitions ***/
-testCases.forEach(function(testCase) {
-  suite.add(testCase);
-})
+suite.add(testCases.cssTransition);
+suite.add(testCases.famous);
+suite.add(testCases.greensock);
+suite.add(testCases.pureJS);
+
 suite.on('cycle', function(event) {
   var bench = event.target;
   testResults.push({
